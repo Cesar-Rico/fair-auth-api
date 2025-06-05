@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.json({ message: 'Bienvenido a flex-auth-api' });
 })
 
