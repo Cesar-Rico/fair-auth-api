@@ -1,8 +1,6 @@
 import { User } from './user'; // Ajusta esta ruta a donde esté tu clase
-import bcrypt from 'bcrypt';
 
 const user = new User({
-  id: 1,
   user: 'johndoe',
   password: 'SuperSecret123',
   name: 'John',
