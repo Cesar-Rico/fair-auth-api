@@ -12,6 +12,8 @@ interface UserProps {
 }
 
 export class User {
+  private static currentId = 0; // <- empieza en 0
+
   readonly id: number;
   readonly user: string;
   private passwordHash: string;
@@ -22,19 +24,21 @@ export class User {
   ip: string;
 
   constructor({
-    id,
     user,
     password,
     name,
     lastName,
     email,
     token = '',
-    ip = '',
-  }: UserProps) {
+    ip = ''
+  }: Omit<UserProps, 'id'>) { // <- omitimos id porque lo genera la clase
+
     if (!email.includes('@')) {
       throw new Error('Invalid email address');
     }
-    this.id = id;
+    User.currentId += 1;           // <-- Incrementa
+    this.id = User.currentId;      // <-- Asigna
+
     this.user = user;
     this.passwordHash = this.hashPassword(password);
     this.name = name;
@@ -45,17 +49,15 @@ export class User {
   }
 
   private hashPassword(password: string): string {
-    const saltRounds = 10; // Dificultad del hash, 10 está bien por defecto
+    const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     return bcrypt.hashSync(password, salt);
   }
 
-  // Método para verificar si un password es correcto
   verifyPassword(password: string): boolean {
     return bcrypt.compareSync(password, this.passwordHash);
   }
 
-  // Opcional: Exponer el hash solo si es necesario
   getPasswordHash(): string {
     return this.passwordHash;
   }
