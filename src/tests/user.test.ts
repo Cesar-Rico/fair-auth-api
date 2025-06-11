@@ -10,6 +10,7 @@ describe('User Class', () => {
       name: 'John',
       lastName: 'Doe',
       email: 'john@example.com',
+      status: 1,
     });
 
     expect(await user.verifyPassword('MyPass123!')).toBe(true);
@@ -23,6 +24,7 @@ describe('User Class', () => {
     name: 'John',
     lastName: 'Doe',
     email: 'john1@example.com',
+    status: 1,
   });
     const user2 = await User.create({
     user: 'johndoe2',
@@ -30,6 +32,7 @@ describe('User Class', () => {
     name: 'Johnny',
     lastName: 'Doeman',
     email: 'john2@example.com',
+    status: 1,
   });
 
     expect(user2.id).toBe(user1.id + 1);
