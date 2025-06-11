@@ -44,9 +44,10 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 }
 
-export const listUsers = (req: Request, res: Response) => {
+export const listUsers = (req: Request, res: Response): void =>{
     if (users.length === 0) {
-        return res.status(404).json({ message: "No hay usuarios registrados" });
+        res.status(404).json({ message: "No hay usuarios registrados" });
+        return
     }
     // Return a list of users without passwords
     let usersWithoutPasswords = users.map(user => ({
@@ -69,5 +70,5 @@ export const listUsers = (req: Request, res: Response) => {
         return res.status(200).json({ "users": activeUsers });
     }
     */
-    return res.status(200).json({ "users": activeUsers });
+    res.status(200).json({ "users": activeUsers });
 }
