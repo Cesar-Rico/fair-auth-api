@@ -22,6 +22,6 @@ describe('Auth Routes', () => {
       });
 
     expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('passwordHash');
+    expect(res.body).toHaveProperty('username');
   });
 });

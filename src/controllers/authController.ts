@@ -11,7 +11,7 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     let observacion = validarDatosUsuario(req.body);
     if (observacion) {
-      res.json({ message: observacion });
+      res.status(400).json({ message: observacion });
       return;
     }
 
@@ -21,7 +21,6 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(201).json({
       message: "Usuario creado exitosamente",
       username: user.user,
-      passwordHash: user.getPasswordHash() // ✅ para que el test pase
     });
   } catch (error) {
     console.error("Error al crear el usuario:", error);
