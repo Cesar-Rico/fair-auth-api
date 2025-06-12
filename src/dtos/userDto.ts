@@ -4,6 +4,4 @@ export interface UserDTO{
     name: string;
     lastName?: string;
     email: string;
-    token?: string;
-    ip?: string;
 }

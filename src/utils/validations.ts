@@ -1,10 +1,10 @@
-import { UserInput } from "../types/user";
 import { messages } from "../i18n/messages";
+import { UserDTO } from "dtos/userDto";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const lang = 'es';
 
-export const validarDatosUsuario = (user: UserInput): string | null => {
+export const validarDatosUsuario = (user: UserDTO): string | null => {
     const msg = messages[lang];
     if(!user.name || typeof user.name !== 'string'){
         return msg.requiredName;
