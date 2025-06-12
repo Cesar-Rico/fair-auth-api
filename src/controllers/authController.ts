@@ -1,6 +1,6 @@
 import{ Request, Response } from 'express';
 import { User } from '../models/user';
-import { validarDatosUsuario } from '../utils/validations';
+import { registerUser, listAllUsers } from '../services/registerUserService';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
 
@@ -9,15 +9,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 let users: User[] = [];
 export const createUser = async (req: Request, res: Response) => {
   try {
-    let observacion = validarDatosUsuario(req.body);
-    if (observacion) {
-      res.status(400).json({ message: observacion });
-      return;
-    }
-
-    const user = await User.create(req.body);
-    users.push(user);
-
+    const user = await registerUser(req.body);
     res.status(201).json({
       message: "Usuario creado exitosamente",
       username: user.user,
@@ -45,5 +37,5 @@ export const loginUser = async (req: Request, res: Response) => {
 }
 
 export const listUsers = (req: Request, res: Response) => {
-    res.json({"users": users});
+    res.json({"users": listAllUsers()});
 }

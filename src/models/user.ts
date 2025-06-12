@@ -2,20 +2,11 @@ import bcrypt from 'bcrypt';
 import argon2 from 'argon2';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
+import { UserInput } from 'types/user';
 
 dotenv.config();
 
 const HASH_ALGORITHM = process.env.HASH_ALGORITHM?.toLowerCase() || 'bcrypt';
-
-interface UserProps {
-  user: string;
-  password: string;
-  name: string;
-  lastName: string;
-  email: string;
-  token?: string;
-  ip?: string;
-}
 
 export class User {
   private static currentId = 0;
@@ -43,7 +34,7 @@ export class User {
     user: string;
     passwordHash: string;
     name: string;
-    lastName: string;
+    lastName?: string;
     email: string;
     token?: string;
     ip?: string;
@@ -52,13 +43,13 @@ export class User {
     this.user = user;
     this.passwordHash = passwordHash;
     this.name = name;
-    this.lastName = lastName;
+    this.lastName = lastName ?? '';
     this.email = email;
     this.token = token ?? '';
     this.ip = ip ?? '';
   }
 
-  static async create(props: UserProps): Promise<User> {
+  static async create(props: UserInput): Promise<User> {
     if (!props.email.includes('@')) {
       throw new Error('Invalid email');
     }

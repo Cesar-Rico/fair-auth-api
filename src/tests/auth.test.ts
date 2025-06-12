@@ -24,4 +24,16 @@ describe('Auth Routes', () => {
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('username');
   });
+  it('should fail to create user with invalid input', async () => {
+    const res = await request(app)
+        .post('/users')
+        .send({
+          user: 'janedoe',
+          name: 'Jane',
+          lastName: 'Doe',
+          email: 'jane@example.com',
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body);
+  })
 });
