@@ -17,6 +17,7 @@ export class User {
   readonly name: string;
   readonly lastName: string;
   readonly email: string;
+  readonly status: number = 1; // Default status is true
   token: string;
   ip: string;
 
@@ -27,6 +28,7 @@ export class User {
     name,
     lastName,
     email,
+    status = 1,
     token = '',
     ip = '',
   }: {
@@ -36,6 +38,7 @@ export class User {
     name: string;
     lastName?: string;
     email: string;
+    status: number;
     token?: string;
     ip?: string;
   }) {
@@ -45,6 +48,7 @@ export class User {
     this.name = name;
     this.lastName = lastName ?? '';
     this.email = email;
+    this.status = status;
     this.token = token ?? '';
     this.ip = ip ?? '';
   }

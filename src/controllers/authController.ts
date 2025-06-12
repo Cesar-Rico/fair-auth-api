@@ -36,6 +36,31 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 }
 
-export const listUsers = (req: Request, res: Response) => {
-    res.json({"users": listAllUsers()});
+export const listUsers = (req: Request, res: Response): void =>{
+    if (users.length === 0) {
+        res.status(404).json({ message: "No hay usuarios registrados" });
+        return
+    }
+    // Return a list of users without passwords
+    let usersWithoutPasswords = users.map(user => ({
+        id: user.id,
+        user: user.user,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        status: user.status,
+        token: user.token,
+        ip: user.ip
+    }));
+    // Return the list of users
+    let activeUsers = usersWithoutPasswords.filter(user => user.status === 1);
+    // If no active users, return a 404 status
+    /*
+    if (activeUsers.length === 0) {
+        return res.status(404).json({ message: "No hay usuarios activos" });
+    }else {
+        return res.status(200).json({ "users": activeUsers });
+    }
+    */
+    res.status(200).json({ "users": activeUsers });
 }

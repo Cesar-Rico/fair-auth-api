@@ -5,6 +5,6 @@ import { validateUserInput } from "../middleware/validateUserInput";
 const router = Router();
 
 router.post('/', validateUserInput, createUser);
-router.get("/login", loginUser)
+router.post("/login", loginUser)
 router.get("/listAll", listUsers)
 export default router;
