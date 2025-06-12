@@ -1,12 +1,8 @@
 import{ Request, Response } from 'express';
 import { User } from '../models/user';
-import { registerUser, listAllUsers } from '../services/registerUserService';
+import { registerUser, listAllUsers, validateUser } from '../services/userService';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-let users: User[] = [];
 export const createUser = async (req: Request, res: Response) => {
   try {
     const user = await registerUser(req.body);
@@ -23,44 +19,10 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    let userFind: User | undefined = users.find(objUser => objUser.user === username);
-   
-    if(userFind){
-        const match: boolean = await userFind.verifyPassword(password);
-        res.json({"validado": match, "message": match ? "Usuario validado correctamente": "Contraseña no valida"});
-    }else{
-        res.json({"validado": false, "message": "No se encontro usuario en base de datos"});
-    }
+    const match: boolean = await validateUser(req.body.username, req.body.password);
+    res.json({"validado": match, "message": match ? "Usuario validado correctamente": "Usuario no valido"});
 }
 
-export const listUsers = (req: Request, res: Response): void =>{
-    if (users.length === 0) {
-        res.status(404).json({ message: "No hay usuarios registrados" });
-        return
-    }
-    // Return a list of users without passwords
-    let usersWithoutPasswords = users.map(user => ({
-        id: user.id,
-        user: user.user,
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        status: user.status,
-        token: user.token,
-        ip: user.ip
-    }));
-    // Return the list of users
-    let activeUsers = usersWithoutPasswords.filter(user => user.status === 1);
-    // If no active users, return a 404 status
-    /*
-    if (activeUsers.length === 0) {
-        return res.status(404).json({ message: "No hay usuarios activos" });
-    }else {
-        return res.status(200).json({ "users": activeUsers });
-    }
-    */
-    res.status(200).json({ "users": activeUsers });
+export const listUsers = (req: Request, res: Response) =>{
+    res.status(200).json(listAllUsers());
 }
