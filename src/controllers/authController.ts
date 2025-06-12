@@ -19,8 +19,8 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-    const match: boolean = await validateUser(req.body.username, req.body.password);
-    res.json({"validado": match, "message": match ? "Usuario validado correctamente": "Usuario no valido"});
+    const match: boolean = await validateUser(req.body.email, req.body.password);
+    res.json({"validado": match, "message": match ? "Email validado correctamente": "Datos incorrectos"});
 }
 
 export const listUsers = (req: Request, res: Response) =>{

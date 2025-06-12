@@ -39,8 +39,8 @@ export const listAllUsers = (): Object => {
     return { "users": activeUsers };
 }
 
-export const validateUser = async (username: string, password: string ): Promise<boolean> => {
-    let userFind: User | undefined = users.find(objUser => objUser.user === username);
+export const validateUser = async (email: string, password: string ): Promise<boolean> => {
+    let userFind: User | undefined = users.find(objUser => objUser.email === email);
    
     if(userFind){
         return await userFind.verifyPassword(password);
