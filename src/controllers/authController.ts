@@ -1,7 +1,7 @@
 import{ Request, Response } from 'express';
 import { User } from '../models/user';
 import { registerUser, listAllUsers, validateUser } from '../services/userService';
-import { mapUserDtoToInput } from 'mappers/userMapper';
+import { mapUserDtoToInput } from '../mappers/userMapper';
 import { UserDTO } from 'dtos/userDto';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
