@@ -5,3 +5,10 @@ export interface UserDTO{
     lastName?: string;
     email: string;
 }
+export interface UserResponseDTO{
+    user: string;
+    name: string;
+    lastName?: string;
+    email: string;
+    status: number;
+}
