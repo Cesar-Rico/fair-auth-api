@@ -2,7 +2,8 @@ import{ Request, Response } from 'express';
 import { User } from '../models/user';
 import { registerUser, listAllUsers, validateUser } from '../services/userService';
 import { mapUserDtoToInput } from '../mappers/userMapper';
-import { UserDTO } from 'dtos/userDto';
+import { UserDTO, UserResponseDTO } from 'dtos/userDto';
+import { SucessResponse } from '../types/responses';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
 export const createUser = async (req: Request, res: Response) => {
@@ -10,10 +11,10 @@ export const createUser = async (req: Request, res: Response) => {
     const userDto: UserDTO = req.body;
     const userInput = mapUserDtoToInput(userDto);
     const user = await registerUser(userInput);
-    res.status(201).json({
-      message: "Usuario creado exitosamente",
-      username: user.user,
-    });
+    const userResponseDTO: UserResponseDTO = {
+      user: user.user,
+    }
+    res.status(201).json(new SucessResponse("Usuario creado exitosamente", userResponseDTO))
   } catch (error) {
     console.error("Error al crear el usuario:", error);
     res.status(400).json({

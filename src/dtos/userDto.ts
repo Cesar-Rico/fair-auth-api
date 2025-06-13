@@ -6,9 +6,9 @@ export interface UserDTO{
     email: string;
 }
 export interface UserResponseDTO{
-    user: string;
-    name: string;
+    user?: string;
+    name?: string;
     lastName?: string;
-    email: string;
-    status: number;
+    email?: string;
+    status?: number;
 }
