@@ -7,9 +7,14 @@ let users: User[] = [];
 
 
 export const registerUser= async (input: UserInput): Promise<User> => {
-  const user = await User.create(input)
-  users.push(user);
-  return user;
+
+    const exists = users.find((u) => u.user === input.user || u.email === input.email);
+    if (exists) {
+        throw new Error('User or email already exists');
+    }
+    const user = await User.create(input)
+    users.push(user);
+    return user;
 };
 
 
