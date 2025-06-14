@@ -28,6 +28,10 @@ export const loginUser = async (req: Request, res: Response) => {
     res.json({"validado": match, "message": match ? "Email validado correctamente": "Datos incorrectos"});
 }
 
-export const listUsers = (req: Request, res: Response) =>{
-    res.status(200).json(listAllUsers());
+export const listUsers = (req: Request, res: Response): void =>{
+    const result:UserResponseDTO[] = listAllUsers();
+    if (Array.isArray(result) && result.length === 0) {
+        res.status(404).json(new SucessResponse("No hay usuarios registrados", []));
+    }
+    res.status(200).json(new SucessResponse("Lista de usuarios", result));
 }
