@@ -5,7 +5,14 @@ export class SucessResponse<T extends Record<string, any>>{
 
     constructor(message: string, data: T){
         this.message = message;
-        this.data = cleanObject(data);
+        // Clean the object to remove any undefined or null values
+        // and ensure it is a plain object
+        // If data is an object, clean it; otherwise, assign it directly
+        if (typeof data === 'object' && !Array.isArray(data)) {
+            this.data = cleanObject(data);
+        } else {
+            this.data = data;
+        }
     }
 }
 
