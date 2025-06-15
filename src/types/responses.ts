@@ -1,3 +1,4 @@
+import { LoginResponseDTO } from "dtos/loginDto";
 import { cleanObject } from "../utils/cleanObject";
 export class SucessResponse<T extends Record<string, any>>{
     message: string;
@@ -19,9 +20,11 @@ export class SucessResponse<T extends Record<string, any>>{
 export class ErrorResponse<T>{
     message: string;
     error?: string;
+    sucess: boolean;
 
     constructor(message: string, error?: string){
         this.message = message;
         this.error = error;
+        this.sucess = false;
     }
 }

@@ -26,11 +26,8 @@ export const listAllUsers = (): UserResponseDTO[] => {
     return activeUsers;
 }
 
-export const validateUser = async (email: string, password: string ): Promise<boolean> => {
-    let userFind: User | undefined = users.find(objUser => objUser.email === email);
-   
-    if(userFind){
-        return await userFind.verifyPassword(password);
-    }
-    return false;
+export const validateUser = async (email: string, password: string ): Promise<User | null> => {
+    let userFind: User | undefined = users.find(user => user.email === email);
+    if(!userFind) return null;
+    return (await userFind.verifyPassword(password)) ? userFind : null;
 }

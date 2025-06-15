@@ -4,6 +4,7 @@ import { registerUser, listAllUsers, validateUser } from '../services/userServic
 import { mapUserDtoToInput } from '../mappers/userMapper';
 import { UserDTO, UserResponseDTO } from 'dtos/userDto';
 import { ErrorResponse, SucessResponse } from '../types/responses';
+import { LoginResponseDTO } from 'dtos/loginDto';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
 export const createUser = async (req: Request, res: Response) => {
@@ -21,8 +22,18 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-    const match: boolean = await validateUser(req.body.email, req.body.password);
-    res.json({"validado": match, "message": match ? "Email validado correctamente": "Datos incorrectos"});
+    const userFind: User | null = await validateUser(req.body.email, req.body.password);
+    if(!userFind){
+      res.status(401).json(new ErrorResponse("Credenciales inválidas"));
+      return;
+    }
+    const loginResponseDTO: LoginResponseDTO = {
+      id: userFind.id,
+      username: userFind.user,
+      token: '',
+      method: 'password'
+    }
+    res.status(200).json(new SucessResponse("Inicio de sesion exitoso", loginResponseDTO));
 }
 
 export const listUsers = (req: Request, res: Response): void =>{
