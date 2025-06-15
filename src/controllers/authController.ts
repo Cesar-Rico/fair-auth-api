@@ -5,6 +5,7 @@ import { mapUserDtoToInput } from '../mappers/userMapper';
 import { UserDTO, UserResponseDTO } from 'dtos/userDto';
 import { ErrorResponse, SucessResponse } from '../types/responses';
 import { LoginResponseDTO } from 'dtos/loginDto';
+import { getTokenStrategy, InitFairAuthLibOptions } from '../config/initFairAuthLib';
 // Registrar usuario
 // TODO: Cambiar a POST para prod
 export const createUser = async (req: Request, res: Response) => {
@@ -42,4 +43,16 @@ export const listUsers = (req: Request, res: Response): void =>{
         res.status(404).json(new SucessResponse("No hay usuarios registrados", []));
     }
     res.status(200).json(new SucessResponse("Lista de usuarios", result));
+}
+
+export const generateToken = async (req: Request, res: Response)=> {
+  InitFairAuthLibOptions({
+    tokenStrategy: {
+      type: 'jwt',
+      config: { secret: 'pruebita-secret', expiresIn: 100}
+    }
+  })
+
+  const token = await getTokenStrategy().generateToken({ userId: 123});
+  res.status(200).json(new SucessResponse("Token", {"token": token}));
 }
