@@ -46,13 +46,8 @@ export const listUsers = (req: Request, res: Response): void =>{
 }
 
 export const generateToken = async (req: Request, res: Response)=> {
-  InitFairAuthLibOptions({
-    tokenStrategy: {
-      type: 'jwt',
-      config: { secret: 'pruebita-secret', expiresIn: 100}
-    }
-  })
 
   const token = await getTokenStrategy().generateToken({ userId: 123});
+
   res.status(200).json(new SucessResponse("Token", {"token": token}));
 }
