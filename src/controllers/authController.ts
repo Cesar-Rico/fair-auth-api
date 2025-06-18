@@ -51,3 +51,24 @@ export const generateToken = async (req: Request, res: Response)=> {
 
   res.status(200).json(new SucessResponse("Token", {"token": token}));
 }
+
+export const generateHasher = async (req: Request, res: Response)=> {
+
+  InitFairAuthLibOptions({
+    tokenStrategy: {
+      type: 'jwt',
+      config: {
+        secret: 'pruebita-secret',
+        expiresIn: 100
+      }
+    },
+    hasher: {
+      type: 'bcrypt',
+      config: {
+        saltRounds: 10
+      }
+    }
+  });
+
+  //res.status(200).json(new SucessResponse("Token", {"token": token}));
+}
