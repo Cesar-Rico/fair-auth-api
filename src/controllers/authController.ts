@@ -63,56 +63,12 @@ export const validateToken = async (req: Request, res: Response) => {
 }
 
 export const generateHasher = async (req: Request, res: Response)=> {
-
-  InitFairAuthLibOptions({
-    tokenStrategy: {
-      type: 'jwt',
-      config: {
-        secret: 'pruebita-secret',
-        expiresIn: 100
-      }
-    },
-    hasher: {
-      
-      type: 'bcrypt',
-      config: {
-        saltRounds: 10
-      }
-      
-      /*
-      type: 'argon2',
-      config: {
-        memoryCost: 2 ** 16, // 64 MB
-        timeCost: 3,
-        parallelism: 1,
-        hashLength: 32,
-        saltLength: 16
-      }
-      */
-      /*
-      type: 'scrypt',
-      config: {
-        N: 16384, // CPU/memory cost
-        r: 8, // Block size
-        p: 1, // Parallelization factor
-        dkLen: 64, // Length of the derived key
-        maxmem: 64 * 1024 * 1024 // Maximum memory usage in bytes (64 MB)
-      }
-      */
-      /*
-      generateHash: async (data: string) => {
-        // Implement your hashing logic here
-        return `hashed-${data}`;
-      },
-      verifyHash: async (data: string, hash: string) => {
-        // Implement your hash verification logic here
-        return hash === `hashed-${data}`;
-      }
-      */
-    }
-  });
   
   const hasher = await getHasher().generateHash('test-password');
 
-  res.status(200).json(new SucessResponse("Hasher", {"hash": hasher}));
+  let match;
+  
+  match = await getHasher().verifyHash('test-password', hasher);
+
+  res.status(200).json(new SucessResponse("Hasher", {"hash": hasher, "match": match}));
 }
