@@ -29,5 +29,5 @@ export const listAllUsers = (): UserResponseDTO[] => {
 export const validateUser = async (email: string, password: string ): Promise<User | null> => {
     let userFind: User | undefined = users.find(user => user.email === email);
     if(!userFind) return null;
-    return (await userFind.verifyPassword(password)) ? userFind : null;
+    return (await userFind.verifyPasswordStrategy(password)) ? userFind : null;
 }

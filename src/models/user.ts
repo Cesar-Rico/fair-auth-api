@@ -3,6 +3,7 @@ import argon2 from 'argon2';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import { UserInput } from 'types/user';
+import { getHasher } from 'config/initFairAuthLib';
 
 dotenv.config();
 
@@ -59,8 +60,20 @@ export class User {
     }
 
     const id = ++User.currentId;
-    const passwordHash = await User.hashPassword(props.password);
+    //const passwordHash = await User.hashPassword(props.password);
+    const passwordHash = await User.hashPasswordStrategy(props.password);
     return new User({ ...props, id, passwordHash });
+  }
+
+  static async hashPasswordStrategy(password: string): Promise<string>{
+
+    const hasher = await getHasher().generateHash(password);
+    return hasher;
+  }
+
+  async verifyPasswordStrategy(password: string): Promise<boolean> {
+    const match = await getHasher().verifyHash(password, this.passwordHash);
+    return match;
   }
 
   static async hashPassword(password: string): Promise<string> {

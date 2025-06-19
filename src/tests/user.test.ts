@@ -13,8 +13,8 @@ describe('User Class', () => {
       status: 1,
     });
 
-    expect(await user.verifyPassword('MyPass123!')).toBe(true);
-    expect(await user.verifyPassword('WrongPassword')).toBe(false);
+    expect(await user.verifyPasswordStrategy('MyPass123!')).toBe(true);
+    expect(await user.verifyPasswordStrategy('WrongPassword')).toBe(false);
   });
 
   it('should auto-increment IDs', async () => {
