@@ -32,6 +32,8 @@ export function InitFairAuthLibOptions(options: InitFairAuthLibOptions = {}) {
         currentHasher = new BcryptHasher(options.hasher.config);
     } else if ('type' in options.hasher && options.hasher.type === 'scrypt') {
         currentHasher = new ScryptHasher(options.hasher.config);
+    } else if (isPasswordHasher(options.hasher)) {
+        currentHasher = options.hasher;
     } else {
         throw new Error('Invalid hasher');
     }
@@ -48,5 +50,18 @@ export function isTokenStrategy(obj: any): obj is TokenStrategy {
     obj &&
     typeof obj.generateToken === 'function' &&
     typeof obj.validateToken === 'function'
+  )
+}
+
+export function getHasher(): PasswordHasher {
+    if (!currentHasher) throw new Error('FaitAuthLib not initialized');
+    return currentHasher;
+}
+
+export function isPasswordHasher(obj: any): obj is PasswordHasher {
+  return (
+    obj &&
+    typeof obj.generateHash === 'function' &&
+    typeof obj.verifyHash === 'function'
   )
 }
