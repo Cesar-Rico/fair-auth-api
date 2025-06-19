@@ -1,6 +1,9 @@
 import { JwtTokenStrategy, JwtTokenConfig } from "../core/token/JwtTokenStrategy";
 import { TokenStrategy } from "../core/token/TokenStrategy";
 
+const isDev = process.env.NODE_ENV !== 'production';
+const DEFAULT_SECRET = isDev ? 'secret-key-default': undefined;
+
 interface InitFairAuthLibOptions {
   tokenStrategy?: TokenStrategy | {type: 'jwt', config: JwtTokenConfig}
 }
@@ -9,7 +12,9 @@ let currentTokenStrategy: TokenStrategy;
 
 export function InitFairAuthLibOptions(options: InitFairAuthLibOptions = {}) {
     if (!options.tokenStrategy){
-        currentTokenStrategy = new JwtTokenStrategy( { secret: 'pruebita-secret'})
+        const secret = process.env.JWT_SECRET || DEFAULT_SECRET;
+        if(!secret) throw new Error("JWT_SECRET is required in production.");
+        currentTokenStrategy = new JwtTokenStrategy( { secret: secret, expiresIn: '1M'})
     } else if('type' in options.tokenStrategy && options.tokenStrategy.type === 'jwt'){
         currentTokenStrategy = new JwtTokenStrategy(options.tokenStrategy.config);
     } else if(isTokenStrategy(options.tokenStrategy)) {

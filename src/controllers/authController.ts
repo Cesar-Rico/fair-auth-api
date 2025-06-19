@@ -51,3 +51,13 @@ export const generateToken = async (req: Request, res: Response)=> {
 
   res.status(200).json(new SucessResponse("Token", {"token": token}));
 }
+
+export const validateToken = async (req: Request, res: Response) => {
+  let match;
+  try{
+    match = await getTokenStrategy().validateToken(req.body.token);
+  }catch(e){
+    res.status(200).json(new SucessResponse("Validado", {"Validado": false}));
+  }
+  res.status(200).json(new SucessResponse("Validado", {"Validado": match}));
+}
