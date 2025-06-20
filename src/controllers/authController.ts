@@ -1,8 +1,8 @@
 import{ Request, Response } from 'express';
 import { User } from '../models/user';
-import { registerUser, listAllUsers, validateUser } from '../services/userService';
+import { registerUser, listAllUsers, validateUser, verifyUsernameAvailabilityService } from '../services/userService';
 import { mapUserDtoToInput } from '../mappers/userMapper';
-import { UserDTO, UserResponseDTO } from 'dtos/userDto';
+import { UserDTO, UserResponseDTO, UserVerifyDTO } from 'dtos/userDto';
 import { ErrorResponse, SucessResponse } from '../types/responses';
 import { LoginResponseDTO } from 'dtos/loginDto';
 import { getHasher, getTokenStrategy, InitFairAuthLibOptions } from '../config/initFairAuthLib';
@@ -71,4 +71,10 @@ export const generateHasher = async (req: Request, res: Response)=> {
   match = await getHasher().verifyHash('test-password', hasher);
 
   res.status(200).json(new SucessResponse("Hasher", {"hash": hasher, "match": match}));
+}
+
+export const verifyUsernameAvailability = async (req: Request, res: Response) => {
+
+  const userFind: UserVerifyDTO | null = await verifyUsernameAvailabilityService(req.body);
+  res.status(200).json(new SucessResponse("Disponibilidad", {disponible: (!userFind ? true : false)}));
 }

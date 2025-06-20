@@ -1,4 +1,4 @@
-import { UserResponseDTO } from 'dtos/userDto';
+import { UserResponseDTO, UserVerifyDTO } from 'dtos/userDto';
 import { mapUserToUserResponseDto } from '../mappers/userMapper';
 import { User } from '../models/user';
 import { UserInput } from '../types/user';
@@ -30,4 +30,10 @@ export const validateUser = async (email: string, password: string ): Promise<Us
     let userFind: User | undefined = users.find(user => user.email === email);
     if(!userFind) return null;
     return (await userFind.verifyPasswordStrategy(password)) ? userFind : null;
+}
+
+export const verifyUsernameAvailabilityService = async (user: UserVerifyDTO): Promise<User | null> => {
+    const userFind = users.find(u => u.user === user.user);
+    if (!userFind) return null;
+    return userFind;
 }

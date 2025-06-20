@@ -76,6 +76,8 @@ export class User {
     return match;
   }
 
+  // Static method to hash a password using the configured algorithm
+  // version anterior
   static async hashPassword(password: string): Promise<string> {
     switch (HASH_ALGORITHM) {
       case 'bcrypt': {
@@ -106,7 +108,8 @@ export class User {
         throw new Error(`Unsupported HASH_ALGORITHM: ${HASH_ALGORITHM}`);
     }
   }
-
+  // Method to verify a password against the stored hash
+  // version anterior
   async verifyPassword(password: string): Promise<boolean> {
     switch (HASH_ALGORITHM) {
       case 'bcrypt':

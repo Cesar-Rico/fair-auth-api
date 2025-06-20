@@ -13,3 +13,6 @@ export interface UserResponseDTO{
     email?: string;
     status?: number;
 }
+export interface UserVerifyDTO {
+    user: string;
+}
