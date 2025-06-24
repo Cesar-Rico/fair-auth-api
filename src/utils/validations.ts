@@ -41,7 +41,7 @@ export const validatePassword = (password: string): string | null => {
   if (!/[0-9]/.test(password)) {
     return msg.passwordNumber;
   }
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+  if (!/[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/.test(password)) {
     return msg.passwordSpecialChar;
   }
   return null;
