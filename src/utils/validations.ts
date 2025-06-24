@@ -29,7 +29,7 @@ export const validatePassword = (password: string): string | null => {
   if (password.length < 8) {
     return msg.passwordLength;
   }
-  if (password.length < 64) {
+  if (password.length > 64) {
     return msg.maxPasswordLength;
   }
   if (!/[A-Z]/.test(password)) {
