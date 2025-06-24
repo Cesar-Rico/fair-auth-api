@@ -23,3 +23,23 @@ export const validarDatosUsuario = (user: UserDTO): string | null => {
 const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
+
+export const validatePassword = (password: string): string | null => {
+  const msg = messages[lang];
+  if (password.length < 8) {
+    return msg.passwordLength;
+  }
+  if (!/[A-Z]/.test(password)) {
+    return msg.passwordUppercase;
+  }
+  if (!/[a-z]/.test(password)) {
+    return msg.passwordLowercase;
+  }
+  if (!/[0-9]/.test(password)) {
+    return msg.passwordNumber;
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return msg.passwordSpecialChar;
+  }
+  return null;
+}

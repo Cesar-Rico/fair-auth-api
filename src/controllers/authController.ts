@@ -6,6 +6,8 @@ import { UserDTO, UserResponseDTO, UserVerifyDTO } from 'dtos/userDto';
 import { ErrorResponse, SucessResponse } from '../types/responses';
 import { LoginResponseDTO } from 'dtos/loginDto';
 import { getHasher, getTokenStrategy, InitFairAuthLibOptions } from '../config/initFairAuthLib';
+import { validatePassword } from 'utils/validations';
+
 // Registrar usuario
 // TODO: Cambiar a POST para prod
 export const createUser = async (req: Request, res: Response) => {
@@ -77,4 +79,20 @@ export const verifyUsernameAvailability = async (req: Request, res: Response) =>
 
   const userFind: UserVerifyDTO | null = await verifyUsernameAvailabilityService(req.body);
   res.status(200).json(new SucessResponse("Disponibilidad", {disponible: (!userFind ? true : false)}));
+}
+
+export const validatePasswordController = async (req: Request, res: Response) => {
+  const { password } = req.body;
+  let obs: string | null = null;
+  try {
+    obs = await validatePassword(password);
+  } catch (error) {
+    obs = (error as Error).message;
+  }
+  
+  if (obs) {
+    res.status(400).json(new ErrorResponse("Error de validación de contraseña", obs));
+  } else {
+    res.status(200).json(new SucessResponse("Contraseña válida", { valid: true }));
+  }
 }

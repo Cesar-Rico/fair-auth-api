@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import dotenv from 'dotenv';
 import { UserInput } from 'types/user';
 import { getHasher } from 'config/initFairAuthLib';
+import { validatePassword } from 'utils/validations';
 
 dotenv.config();
 
@@ -57,6 +58,12 @@ export class User {
   static async create(props: UserInput): Promise<User> {
     if (!props.email.includes('@')) {
       throw new Error('Invalid email');
+    }
+
+    let obs: string | null = validatePassword(props.password);
+    if (obs) {
+      obs = `Password validation error: ${obs}`;
+      throw new Error(obs);
     }
 
     const id = ++User.currentId;

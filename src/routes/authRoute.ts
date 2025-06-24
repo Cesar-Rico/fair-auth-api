@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, generateHasher, generateToken, listUsers, loginUser, validateToken, verifyUsernameAvailability } from "../controllers/authController";
+import { createUser, generateHasher, generateToken, listUsers, loginUser, validateToken, verifyUsernameAvailability, validatePasswordController } from "../controllers/authController";
 import { validateUserInput } from "../middleware/validateUserInput";
 
 const router = Router();
@@ -11,4 +11,5 @@ router.get("/token", generateToken);
 router.get("/validateToken", validateToken);
 router.get("/hash", generateHasher);
 router.get("/verifyUser", verifyUsernameAvailability);
+router.get("/validatePassword", validatePasswordController);
 export default router;
