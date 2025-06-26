@@ -3,7 +3,7 @@ import argon2 from 'argon2';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import { UserInput } from 'types/user';
-import { getHasher } from 'config/initFairAuthLib';
+import { getHasher, getTokenStrategy } from 'config/initFairAuthLib';
 import { validatePassword } from 'utils/validations';
 
 dotenv.config();

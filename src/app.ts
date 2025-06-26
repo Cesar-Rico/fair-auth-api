@@ -24,7 +24,7 @@ InitFairAuthLibOptions({
       type: 'jwt',
       config: {
         secret: 'pruebita-secret',
-        expiresIn: 100
+        expiresIn: '1M'
       }
     },
     hasher: {

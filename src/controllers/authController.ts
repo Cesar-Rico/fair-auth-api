@@ -30,16 +30,22 @@ export const loginUser = async (req: Request, res: Response) => {
       res.status(401).json(new ErrorResponse("Credenciales inválidas"));
       return;
     }
+    const token = await getTokenStrategy().generateToken({id: userFind.id, username: userFind.user})
     const loginResponseDTO: LoginResponseDTO = {
       id: userFind.id,
       username: userFind.user,
-      token: '',
+      token: token,
       method: 'password'
     }
     res.status(200).json(new SucessResponse("Inicio de sesion exitoso", loginResponseDTO));
 }
 
-export const listUsers = (req: Request, res: Response): void =>{
+export const listUsers = async (req: Request, res: Response) =>{
+    const validateToken = await validateTokenFunction(req.body?.token);
+    if(!validateToken){
+      res.status(403).json(new ErrorResponse("Token invalido o inexistente"));
+      return;
+    }
     const result:UserResponseDTO[] = listAllUsers();
     if (Array.isArray(result) && result.length === 0) {
         res.status(404).json(new SucessResponse("No hay usuarios registrados", []));
@@ -55,15 +61,18 @@ export const generateToken = async (req: Request, res: Response)=> {
 }
 
 export const validateToken = async (req: Request, res: Response) => {
-  let match;
-  try{
-    match = await getTokenStrategy().validateToken(req.body.token);
-  }catch(e){
-    res.status(200).json(new SucessResponse("Validado", {"Validado": false}));
-  }
+  let match = await validateTokenFunction(req.body.token);  
   res.status(200).json(new SucessResponse("Validado", {"Validado": match}));
 }
-
+const validateTokenFunction = async (token: string): Promise<boolean> => {
+  if (!token) return false;
+  try {
+    return await getTokenStrategy().validateToken(token);
+  } catch (e) {
+    console.error("Error interno:", e);
+    return false;
+  }
+};
 export const generateHasher = async (req: Request, res: Response)=> {
   
   const hasher = await getHasher().generateHash('test-password');
