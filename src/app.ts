@@ -3,7 +3,9 @@ import userRoutes from 'routes/authRoute';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { InitFairAuthLibOptions } from 'config/initFairAuthLib';
-import { JwtTokenStrategy } from 'core/token/JwtTokenStrategy';
+import { seedUsers } from 'services/seedUserService';
+import { isDevModeEnabled } from 'config/config';
+
 dotenv.config();
 
 const app = express();
