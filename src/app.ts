@@ -21,7 +21,7 @@ app.use('/users', userRoutes);
 
 InitFairAuthLibOptions({
     tokenStrategy: {
-      type: 'jwt',
+      type: 'opaque',
       config: {
         secret: 'pruebita-secret',
         expiresIn: '1M'

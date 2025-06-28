@@ -4,12 +4,13 @@ import { PasswordHasher } from "core/hasher/PasswordHasher";
 import { Argon2Hasher } from "core/hasher/Argon2Hasher";
 import { BcryptHasher } from "core/hasher/BcryptHasher";
 import { ScryptHasher } from "core/hasher/ScryptHasher";
+import { OpaqueTokenStrategy } from "core/token/OpaqueTokenStrategy";
 
 const isDev = process.env.NODE_ENV !== 'production';
 const DEFAULT_SECRET = isDev ? 'secret-key-default': undefined;
 
 interface InitFairAuthLibOptions {
-  tokenStrategy?: TokenStrategy | {type: 'jwt', config: JwtTokenConfig},
+  tokenStrategy?: TokenStrategy | {type: 'jwt', config: JwtTokenConfig} | {type: 'opaque', config: any},
   hasher?: PasswordHasher | {type: 'argon2', config?: any} | {type: 'bcrypt', config?: any} | {type: 'scrypt', config?: any}
 }
 
@@ -23,6 +24,8 @@ export function InitFairAuthLibOptions(options: InitFairAuthLibOptions = {}) {
         currentTokenStrategy = new JwtTokenStrategy( { secret: secret, expiresIn: '1M'})
     } else if('type' in options.tokenStrategy && options.tokenStrategy.type === 'jwt'){
         currentTokenStrategy = new JwtTokenStrategy(options.tokenStrategy.config);
+    } else if('type' in options.tokenStrategy && options.tokenStrategy.type === 'opaque'){
+        currentTokenStrategy = new OpaqueTokenStrategy(options.tokenStrategy.config);
     } else if(isTokenStrategy(options.tokenStrategy)) {
         currentTokenStrategy = options.tokenStrategy;
     } else {
