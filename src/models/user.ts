@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { UserInput } from 'types/user';
 import { getHasher, getTokenStrategy } from 'config/initFairAuthLib';
 import { validatePassword } from 'utils/validations';
+import { logger } from 'utils/logger';
 
 dotenv.config();
 
@@ -57,19 +58,34 @@ export class User {
 
   static async create(props: UserInput): Promise<User> {
     if (!props.email.includes('@')) {
+      logger.warn('[User.create] email inválido: %s', props.email);
       throw new Error('Invalid email');
     }
 
     let obs: string | null = validatePassword(props.password);
     if (obs) {
-      obs = `Password validation error: ${obs}`;
+      //obs = `Password validation error: ${obs}`;
+      logger.warn('[User.create] password inválido: %s', obs);
       throw new Error(obs);
     }
-
+/* 
     const id = ++User.currentId;
     //const passwordHash = await User.hashPassword(props.password);
     const passwordHash = await User.hashPasswordStrategy(props.password);
-    return new User({ ...props, id, passwordHash });
+    return new User({ ...props, id, passwordHash }); */
+
+    try {
+      const id = ++User.currentId;
+      const passwordHash = await User.hashPasswordStrategy(props.password);
+      const nuevo = new User({ ...props, id, passwordHash });
+
+      logger.debug('[User.create] nuevo usuario instanciado', {id, user: nuevo.user, });
+      return nuevo;
+    } catch (err) {
+      logger.error('[User.create] hash/instanciación fallida', err);
+      throw err;
+    }
+
   }
 
   static async hashPasswordStrategy(password: string): Promise<string>{

@@ -3,8 +3,6 @@ import userRoutes from 'routes/authRoute';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { InitFairAuthLibOptions } from 'config/initFairAuthLib';
-import { seedUsers } from 'services/seedUserService';
-import { isDevModeEnabled } from 'config/config';
 
 dotenv.config();
 
