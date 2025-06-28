@@ -41,6 +41,7 @@ export const loginUser = async (req: Request, res: Response) => {
 }
 
 export const listUsers = async (req: Request, res: Response) =>{
+    //TODO: Validaciones por rol
     const validateToken = await validateTokenFunction(req.body?.token);
     if(!validateToken){
       res.status(403).json(new ErrorResponse("Token invalido o inexistente"));
