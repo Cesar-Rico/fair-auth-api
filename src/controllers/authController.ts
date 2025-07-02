@@ -62,16 +62,20 @@ export const generateToken = async (req: Request, res: Response)=> {
 }
 
 export const validateToken = async (req: Request, res: Response) => {
-  let match = await validateTokenFunction(req.body.token);  
-  res.status(200).json(new SucessResponse("Validado", {"Validado": match}));
-}
-const validateTokenFunction = async (token: string): Promise<boolean> => {
+  const data = await validateTokenFunction(req.body.token);
+  const response = {
+    "Validado": !!data,
+    "Payload": data || null
+  };
+  res.status(200).json(new SucessResponse("Credenciales", response));
+};
+const validateTokenFunction = async (token: string): Promise<any> => {
   if (!token) return false;
   try {
     return await getTokenStrategy().validateToken(token);
   } catch (e) {
     console.error("Error interno:", e);
-    return false;
+    return null;
   }
 };
 export const generateHasher = async (req: Request, res: Response)=> {
