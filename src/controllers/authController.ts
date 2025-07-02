@@ -78,6 +78,10 @@ const validateTokenFunction = async (token: string): Promise<any> => {
     return null;
   }
 };
+export const statusTokenController = async (req: Request, res: Response) =>{
+  const match = await !!validateTokenFunction(req.body.token);
+  res.status(200).json(new SucessResponse("Credenciales", {"Validado": match}));
+}
 export const generateHasher = async (req: Request, res: Response)=> {
   
   const hasher = await getHasher().generateHash('test-password');
