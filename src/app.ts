@@ -18,13 +18,15 @@ app.get('/health', (_req: Request, res: Response) => {
 app.use('/users', userRoutes);
 
 InitFairAuthLibOptions({
+  /* Se comenta para usar jwt por defecto
     tokenStrategy: {
-      type: 'opaque',
+      type: 'jwt',
       config: {
         secret: 'pruebita-secret',
         expiresIn: '1M'
       }
     },
+    */
     hasher: {
       
       type: 'bcrypt',
