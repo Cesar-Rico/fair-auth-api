@@ -35,21 +35,42 @@ export const registerUser= async (input: UserInput): Promise<User> => {
 
 
 export const listAllUsers = (): UserResponseDTO[] => {
+    logger.debug('listAllUsers() invocado');
     let activeUsers: UserResponseDTO[] = [];
+    logger.info(`Total usuarios en memoria: ${users.length}`);
     for (const user of users) {
         activeUsers.push(mapUserToUserResponseDto(user));
     }
+    logger.debug('Usuarios activos mapeados:', activeUsers.length);
     return activeUsers;
 }
 
 export const validateUser = async (email: string, password: string ): Promise<User | null> => {
+    logger.debug('validateUser() llamado', { email });
     let userFind: User | undefined = users.find(user => user.email === email);
-    if(!userFind) return null;
-    return (await userFind.verifyPasswordStrategy(password)) ? userFind : null;
+    if(!userFind){
+        logger.info(`Intento de login con email inexistente: ${email}`);
+        return null;
+    } 
+    //return (await userFind.verifyPasswordStrategy(password)) ? userFind : null;
+
+    const ok = await userFind.verifyPasswordStrategy(password);
+
+    logger[ok ? 'info' : 'warn'](
+        `Login ${ok ? 'exitoso' : 'fallido'} para ${userFind.user} (${email})`
+    );
+
+    return ok ? userFind : null;
 }
 
 export const verifyUsernameAvailabilityService = async (user: UserVerifyDTO): Promise<User | null> => {
+    logger.debug('verifyUsernameAvailabilityService()', { user: user.user });
+
     const userFind = users.find(u => u.user === user.user);
-    if (!userFind) return null;
+    if (!userFind) {
+        logger.info(`Username disponible: ${user.user}`);
+        return null;
+    }
+    logger.warn(`Username YA existe: ${user.user}`);
     return userFind;
 }
