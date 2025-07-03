@@ -114,3 +114,11 @@ export const validatePasswordController = async (req: Request, res: Response) =>
     res.status(200).json(new SucessResponse("Contraseña válida", { valid: true }));
   }
 }
+
+export const getCurrentUser = async (req: Request, res: Response) => {
+  const user = await getTokenStrategy().validateToken(req.body.token)
+  const response = {
+    "data": (user ? user : null)
+  }
+  res.status(200).json(new SucessResponse("Usuario", response));
+}
