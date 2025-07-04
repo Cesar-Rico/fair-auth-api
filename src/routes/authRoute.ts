@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, generateHasher, generateToken, listUsers, loginUser, validateToken, verifyUsernameAvailability, validatePasswordController, statusTokenController } from "../controllers/authController";
+import { createUser, generateHasher, generateToken, listUsers, loginUser, validateToken, verifyUsernameAvailability, validatePasswordController, statusTokenController, getCurrentUser } from "../controllers/authController";
 import { validateUserInput } from "../middleware/validateUserInput";
 import { seedUsers } from "../services/seedUserService";
 import { isDevModeEnabled } from "../config/config";
@@ -15,6 +15,7 @@ router.get("/hash", generateHasher);
 router.get("/verifyUser", verifyUsernameAvailability);
 router.get("/validatePassword", validatePasswordController);
 router.get("/statusToken", statusTokenController);
+router.get("/getCurrentUser", getCurrentUser);
 /* if (process.env.NODE_ENV !== 'production' && isDevModeEnabled()) {
   router.post('/seed', async (req, res) => {
     await seedUsers(req.body.count); // O usar req.body si quieres personalizar
