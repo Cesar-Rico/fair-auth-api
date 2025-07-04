@@ -9,12 +9,12 @@ let users: User[] = [];
 
 export const registerUser= async (input: UserInput): Promise<User> => {
 
-    logger.info('[registerUser] intento de alta para "%s"', input.user);
+    logger.info('[registerUser] intento de alta para', input.user);
     logger.debug('[registerUser] payload recibido:', input);   // debug detallado
 
     const exists = users.find((u) => u.user === input.user || u.email === input.email);
     if (exists) {
-        logger.warn('[registerUser] duplicado detectado (user="%s", email="%s")', input.user, input.email,);
+        logger.warn('[registerUser] duplicado detectado (user="', input.user, '" email="', input.email, '")');
         throw new Error('User or email already exists');
     }
     // ---- creación real -------------------------------------------------------
@@ -22,7 +22,7 @@ export const registerUser= async (input: UserInput): Promise<User> => {
         const user = await User.create(input);
         users.push(user);
 
-        logger.info('[registerUser] usuario registrado OK ⇒ %s <%s>', user.user, user.email,);
+        logger.info('[registerUser] usuario registrado OK ⇒',user.user,"<",user.email,">");
         //logger.debug('[registerUser] objeto devuelto:', {...user, passwordHash: user.passwordHash.slice(0, 8) + '…',});
         logger.debug('[registerUser] objeto devuelto:', {...user,});
 

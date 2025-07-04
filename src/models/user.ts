@@ -58,14 +58,14 @@ export class User {
 
   static async create(props: UserInput): Promise<User> {
     if (!props.email.includes('@')) {
-      logger.warn('[User.create] email inválido: %s', props.email);
+      logger.warn('[User.create] email inválido:', props.email);
       throw new Error('Invalid email');
     }
 
     let obs: string | null = validatePassword(props.password);
     if (obs) {
       //obs = `Password validation error: ${obs}`;
-      logger.warn('[User.create] password inválido: %s', obs);
+      logger.warn('[User.create] password inválido:', obs);
       throw new Error(obs);
     }
 /* 
