@@ -1,11 +1,13 @@
 import { messages } from "../i18n/messages";
 import { UserDTO } from "dtos/userDto";
+import { logger } from "./logger";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const lang = 'es';
 
 export const validarDatosUsuario = (user: UserDTO): string | null => {
     const msg = messages[lang];
+    logger.debug('[Validaciones] validarDatosUsuario → entrada', user); 
     if(!user.name || typeof user.name !== 'string'){
         return msg.requiredName;
     }
@@ -18,14 +20,18 @@ export const validarDatosUsuario = (user: UserDTO): string | null => {
     if(!user.email || typeof user.email !== 'string' || !isValidEmail(user.email)){
         return msg.requiredEmail;
     }
+    logger.debug('[Validaciones] validarDatosUsuario ✔︎ ok'); 
     return null;
 }
 const isValidEmail = (email: string): boolean => {
-  return emailRegex.test(email);
+  const ok = emailRegex.test(email);
+  logger.debug(`[Validaciones] isValidEmail("${email}") = ${ok}`);
+  return ok;
 };
 
 export const validatePassword = (password: string): string | null => {
   const msg = messages[lang];
+  logger.debug('[Validaciones] validatePassword len=', password.length);
   if (password.length < 8) {
     return msg.passwordLength;
   }
@@ -44,5 +50,6 @@ export const validatePassword = (password: string): string | null => {
   if (!/[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/.test(password)) {
     return msg.passwordSpecialChar;
   }
+  logger.debug('[Validaciones] validatePassword ✔︎ ok');
   return null;
 }

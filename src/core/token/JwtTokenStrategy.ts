@@ -1,5 +1,6 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { TokenStrategy } from './TokenStrategy'
+import { logger } from "utils/logger";
 
 export interface JwtTokenConfig {
     secret: string;
@@ -22,10 +23,19 @@ export class JwtTokenStrategy implements TokenStrategy{
             options.expiresIn = this.expiresIn as SignOptions['expiresIn'];
         }
 
+        logger.info('[JWT] Generando token', {expiresIn: this.expiresIn ?? 'no-exp'});
+
         return jwt.sign(payload, this.secret, options);
   }
 
     validateToken(token: string): any {
-        return jwt.verify(token, this.secret )
+        logger.debug('[JWT] Validando token');
+
+        try{
+            return jwt.verify(token, this.secret)
+        } catch (err) {
+            logger.warn('[JWT] Token inválido o expirado', { error: err});
+            throw new Error("Invalid or expired token");
+        }
     }
 }
