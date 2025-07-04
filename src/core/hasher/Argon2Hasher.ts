@@ -1,5 +1,6 @@
 import argon2 from 'argon2';
 import { PasswordHasher } from './PasswordHasher';
+import { logger } from 'utils/logger';
 
 export interface Argon2HasherConfig {
     timeCost: number;
@@ -23,15 +24,18 @@ export class Argon2Hasher implements PasswordHasher {
     }
     
     async generateHash(password: string): Promise<string> {
-    return argon2.hash(password, {
-        timeCost: this.timeCost,
-        memoryCost: this.memoryCost,
-        parallelism: this.parallelism,
-        type: argon2.argon2id // o argon2i / argon2d si lo haces configurable
-    });
+        logger.debug('[Argon2] Generando hash', {timeCost: this.timeCost, memoryCost: this.memoryCost, parallelism: this.parallelism, type: this.type});
+
+        return argon2.hash(password, {
+            timeCost: this.timeCost,
+            memoryCost: this.memoryCost,
+            parallelism: this.parallelism,
+            type: argon2.argon2id // o argon2i / argon2d si lo haces configurable
+        });
     }
 
     async verifyHash(password: string, hash: string): Promise<boolean> {
-    return argon2.verify(hash, password);
+        logger.debug('[Argon2] Verificando hash');
+        return argon2.verify(hash, password);
     }
 }

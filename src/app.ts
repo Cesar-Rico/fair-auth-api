@@ -3,6 +3,7 @@ import userRoutes from 'routes/authRoute';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { InitFairAuthLibOptions } from 'config/initFairAuthLib';
+import { logger } from 'utils/logger';
 
 dotenv.config();
 
@@ -11,11 +12,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//Log de arranque del middleware
+logger.info('[App] middlewares registrados (cors, json)');
+
 app.get('/health', (_req: Request, res: Response) => {
   res.send('OK');
 });
 
 app.use('/users', userRoutes);
+logger.info('[App] rutas /users montadas'); 
 
 InitFairAuthLibOptions({
   /* Se comenta para usar jwt por defecto
