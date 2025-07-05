@@ -1,6 +1,15 @@
 // src/tests/user.test.ts
 
 import { User } from '../models/user';
+import { InitFairAuthLibOptions } from 'config/initFairAuthLib';
+
+beforeAll(() => {
+  InitFairAuthLibOptions({
+    hasher: { type: 'bcrypt', config: { saltRounds: 4 } },
+    tokenStrategy: { type: 'jwt', config: { secret: 'secret', expiresIn: '1h' } },
+  });
+});
+
 
 describe('User Class', () => {
   it('should hash password and verify it correctly', async () => {

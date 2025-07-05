@@ -2,6 +2,15 @@
 
 import request from 'supertest';
 import app from '../app'; // Tu app Express
+import { InitFairAuthLibOptions } from 'config/initFairAuthLib';
+
+beforeAll(() => {
+  // Inicializa hasher y token strategy para el entorno de test
+  InitFairAuthLibOptions({
+    hasher: { type: 'bcrypt', config: { saltRounds: 4 } },
+    tokenStrategy: { type: 'jwt',  config: { secret: 'test-secret', expiresIn: '1h' } },
+  });
+});
 
 describe('Auth Routes', () => {
   it('should return 200 on /health', async () => {
@@ -15,25 +24,25 @@ describe('Auth Routes', () => {
       .post('/users')
       .send({
         user: 'janedoe',
-        password: '123456',
+        password: 'Aa123456!',
         name: 'Jane',
         lastName: 'Doe',
         email: 'jane@example.com',
       });
 
     expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('username');
+    expect(res.body).toHaveProperty('data.user', 'janedoe');
   });
-  it('should fail to create user with invalid input', async () => {
+  it('should fail to create user with duplicated username/email', async () => {
     const res = await request(app)
         .post('/users')
         .send({
-          user: 'janedoe',
+          user: 'janedoe',  // mismo user/email → 400
+          password: 'Aa123456!',
           name: 'Jane',
           lastName: 'Doe',
           email: 'jane@example.com',
         });
         expect(res.statusCode).toBe(400);
-        expect(res.body);
   })
 });

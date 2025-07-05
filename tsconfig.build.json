@@ -2,6 +2,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist",
     "declaration": true,          // genera *.d.ts
     "declarationMap": true,
@@ -9,6 +10,8 @@
     "removeComments": true
   },
   "exclude": [
+    "dist",
+    "node_modules",
     "src/tests/**/*",
     "**/*.test.ts",
     "**/*.spec.ts"
