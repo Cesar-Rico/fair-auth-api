@@ -8,8 +8,9 @@
     "prod": "NODE_ENV=production nodemon",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "",
