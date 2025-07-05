@@ -1,0 +1,16 @@
+// tsconfig.build.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,          // genera *.d.ts
+    "declarationMap": true,
+    "sourceMap": false,           // normalmente no subes mapas a npm
+    "removeComments": true
+  },
+  "exclude": [
+    "src/tests/**/*",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}
