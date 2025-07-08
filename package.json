@@ -2,15 +2,15 @@
   "name": "fair-auth-lib",
   "version": "1.0.0",
   "description": "Librería de autenticación plug-and-play para Node.js con soporte de JWT y validaciones",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "author": "Fair Auth Team",
   "types": "dist/index.d.ts", 
   "licence": "ISC",
   "keywords": ["auth", "authentication", "jwt", "typescript", "library", "plug-and-play"],
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "files": ["dist"],
