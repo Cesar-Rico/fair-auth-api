@@ -1,20 +1,24 @@
-import app from './app';
-import { bootstrap } from './bootstrap';
-import { logger } from './utils/logger';
+export * from './auth/createUser';
+export * from './auth/generateToken';
+export * from './auth/getCurrentUser';
+export * from './auth/listUsers';
+export * from './auth/loginUser';
+export * from './auth/validatePassword';
+export * from './auth/validateToken';
+export * from './auth/verifyUsernameAvailability';
 
-const PORT = process.env.PORT || 3000;
 
-(async () => {
-  await bootstrap();
-  logger.info('[Index] bootstrap completo');
+export {InitFairAuthLibOptions} from './config/initFairAuthLib';
 
-  if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () =>{
-      logger.info(`[Index] Servidor corriendo en http://localhost:${PORT} (NODE_ENV=${process.env.NODE_ENV})`);   
-      //console.log(`Servidor corriendo en http://localhost:${PORT}`),
-    });
-  }else {
-    logger.warn('[Index] modo test: servidor Express no iniciado');
-  }
+export * from './errors/ConflictError';
+export * from './errors/CustomError';
+export * from './errors/InternalError';
+export * from './errors/NotFoundError';
+export * from './errors/UnauthorizedError';
+export * from './errors/ValidationError';
 
-})();
+export * from './dtos/userDto';
+export * from './dtos/seedUserDto';
+export * from './dtos/userDto';
+
+export * from './types/user'

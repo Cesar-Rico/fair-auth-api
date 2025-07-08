@@ -20,7 +20,7 @@ export const validatePasswordController = async (password: string): Promise<Pass
   }catch (error) {
     return {
         valid: false,
-        observation: (error as Error).message;
+        observation: (error as Error).message
     }
   }
 }
