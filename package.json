@@ -4,16 +4,25 @@
   "description": "Librería de autenticación plug-and-play para Node.js con soporte de JWT y validaciones",
   "main": "dist/index.js",
   "author": "Fair Auth Team",
-  "types": "dist/index.d.ts", 
+  "types": "dist/index.d.ts",
   "licence": "ISC",
-  "keywords": ["auth", "authentication", "jwt", "typescript", "library", "plug-and-play"],
+  "keywords": [
+    "auth",
+    "authentication",
+    "jwt",
+    "typescript",
+    "library",
+    "plug-and-play"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
@@ -23,7 +32,6 @@
   },
   "dependencies": {
     "argon2": "^0.43.0",
-    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "jsonwebtoken": "^9.0.2"
