@@ -1,6 +1,6 @@
 import { isDebugMode } from 'config/debug';
 import { timeZoneConfig } from 'config/config';
-import { promises as fs } from 'fs';
+//import { promises as fs } from 'fs';
 import { join } from 'path';
 
 /** Carpeta donde se guardarán los logs */
@@ -13,7 +13,7 @@ function todayLogFile() {
   return join(LOG_DIR, `app-${iso}.log`);
 }
 
-/** Escribe la línea en el archivo (sin bloquear la app) */
+/** Escribe la línea en el archivo (sin bloquear la app)
 async function writeToFile(line: string) {
   try {
     await fs.mkdir(LOG_DIR, { recursive: true });
@@ -23,7 +23,7 @@ async function writeToFile(line: string) {
     console.error('✖ log file error:', err);
   }
 }
-
+**/
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 function log(level: LogLevel, ...msg: unknown[]) {
@@ -37,7 +37,7 @@ function log(level: LogLevel, ...msg: unknown[]) {
     console[level === 'debug' ? 'log' : level](line);
 
     // Archivo (no esperes al await => sin bloquear)
-    writeToFile(line);
+    //writeToFile(line);
 }
 
 type AnyMsg = unknown[];
