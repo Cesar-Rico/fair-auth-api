@@ -1,6 +1,6 @@
 {
   "name": "fair-auth-lib",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Librería de autenticación plug-and-play para Node.js con soporte de JWT y validaciones",
   "main": "dist/index.js",
   "author": "Fair Auth Team",
