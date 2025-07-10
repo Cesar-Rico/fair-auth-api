@@ -1,4 +1,3 @@
-import jwt, { SignOptions } from 'jsonwebtoken'
 import { TokenStrategy } from './TokenStrategy'
 import { logger } from "utils/logger";
 
@@ -17,25 +16,38 @@ export class JwtTokenStrategy implements TokenStrategy{
     }
 
     generateToken(payload: any): string {
-        const options: SignOptions = {};
+        logger.info('[JWT-SIM] Generando token simulado', {
+        expiresIn: this.expiresIn ?? 'no-exp',
+        });
 
-        if (this.expiresIn !== undefined) {
-            options.expiresIn = this.expiresIn as SignOptions['expiresIn'];
-        }
+        // Simulación: codificamos el payload a base64
+        const fakeHeader = btoa(JSON.stringify({ alg: 'none', typ: 'JWT' }));
+        const fakePayload = btoa(JSON.stringify(payload));
+        const fakeSignature = btoa(this.secret); // NO seguro
 
-        logger.info('[JWT] Generando token', {expiresIn: this.expiresIn ?? 'no-exp'});
-
-        return jwt.sign(payload, this.secret, options);
+        return `${fakeHeader}.${fakePayload}.${fakeSignature}`;
   }
 
     validateToken(token: string): any {
-        logger.debug('[JWT] Validando token');
+        logger.debug('[JWT-SIM] Validando token simulado');
 
-        try{
-            return jwt.verify(token, this.secret)
+        try {
+            const parts = token.split('.');
+            if (parts.length !== 3) throw new Error('Formato inválido');
+
+            const [headerB64, payloadB64, signatureB64] = parts;
+
+            const payload = JSON.parse(atob(payloadB64));
+            const signature = atob(signatureB64);
+
+            if (signature !== this.secret) {
+                throw new Error('Token simulado inválido (firma incorrecta)');
+            }
+
+            return payload;
         } catch (err) {
-            logger.warn('[JWT] Token inválido o expirado', { error: err});
-            throw new Error("Invalid or expired token");
+            logger.warn('[JWT-SIM] Token inválido o expirado', { error: err });
+            throw new Error('Invalid or expired token');
         }
     }
 }

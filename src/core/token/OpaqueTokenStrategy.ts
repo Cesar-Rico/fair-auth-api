@@ -13,7 +13,7 @@ export class OpaqueTokenStrategy implements TokenStrategy{
     }
 
     async generateToken(payload: any): Promise<string> {
-        const token = crypto.randomUUID();
+        const token = globalThis.crypto.randomUUID();
         logger.info('[OpaqueToken] Generando token opaco', { token });
         this.tokenStore.set(token, JSON.stringify(payload));
         return token;

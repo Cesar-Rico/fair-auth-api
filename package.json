@@ -33,8 +33,7 @@
   "dependencies": {
     "argon2": "^0.43.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "jsonwebtoken": "^9.0.2"
+    "dotenv": "^16.5.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
