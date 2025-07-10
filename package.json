@@ -31,12 +31,16 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "argon2": "^0.43.0",
+    "argon2-browser": "^1.18.0",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "scrypt-js": "^3.0.1",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
+    "@types/argon2-browser": "^1.18.4",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/jest": "^29.5.14",
